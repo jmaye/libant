@@ -2,6 +2,7 @@
 #define CALLRESULT_H
 
 #include "Object.h"
+#include "ObjectCreationException.h"
 
 #include <iosfwd>
 
@@ -19,7 +20,7 @@ class CallResult : public Object {
   friend Connection& operator << (Connection &stream,
     const CallResult &obj);
   friend Connection& operator >> (Connection &stream,
-    CallResult &obj);
+    CallResult &obj) throw(ObjectCreationException);
 
   CallResult();
   CallResult(const CallResult &other);
@@ -29,7 +30,7 @@ class CallResult : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
+  virtual void read(Connection &stream) throw(ObjectCreationException);
   virtual void write(Connection &stream) const;
 
   const Object *mObjectPtr;

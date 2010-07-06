@@ -31,7 +31,7 @@ void CallResult::read(ifstream &stream) {
 void CallResult::write(ofstream &stream) const {
 }
 
-void CallResult::read(Connection &stream) {
+void CallResult::read(Connection &stream) throw(ObjectCreationException) {
   uint8_t u8TypeID;
   stream >> u8TypeID;
   mObjectPtr = TypesFactory::createObject(u8TypeID);
@@ -80,7 +80,7 @@ Connection& operator << (Connection &stream,
 }
 
 Connection& operator >> (Connection &stream,
-  CallResult &obj) {
+  CallResult &obj) throw(ObjectCreationException) {
   obj.read(stream);
   return stream;
 }

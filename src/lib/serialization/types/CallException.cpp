@@ -33,7 +33,7 @@ void CallException::read(ifstream &stream) {
 void CallException::write(ofstream &stream) const {
 }
 
-void CallException::read(Connection &stream) {
+void CallException::read(Connection &stream) throw(ObjectCreationException) {
   mNameStrPtr = new String();
   stream >> (Object&)*mNameStrPtr;
   mMsgStrPtr = new String();
@@ -94,7 +94,7 @@ Connection& operator << (Connection &stream,
 }
 
 Connection& operator >> (Connection &stream,
-  CallException &obj) {
+  CallException &obj) throw(ObjectCreationException) {
   obj.read(stream);
   return stream;
 }

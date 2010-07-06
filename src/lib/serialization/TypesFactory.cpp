@@ -25,5 +25,5 @@ Object* TypesFactory::createObject(uint8_t u8TypeID)
   if (mTypesMap.find(u8TypeID) != mTypesMap.end())
     return mTypesMap[u8TypeID]->clone();
   else
-    throw ObjectCreationException("Unknown object ID");
+    throw ObjectCreationException("TypesFactory: Unknown object ID");
 }

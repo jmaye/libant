@@ -17,8 +17,8 @@ Boolean::Boolean(bool bValue) : Object(mProto),
                                 mbValue(bValue) {
 }
 
-Boolean::Boolean(const Boolean &other) : Object(other) {
-  mbValue = other.mbValue;
+Boolean::Boolean(const Boolean &other) : Object(other),
+                                         mbValue(other.mbValue) {
 }
 
 Boolean::~Boolean() {

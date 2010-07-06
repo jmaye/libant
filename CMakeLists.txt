@@ -27,7 +27,6 @@ remake_pack_deb(
 )
 
 remake_pack_deb(
-  ARCH all
   COMPONENT doc
   DESCRIPTION "Documentation"
 )

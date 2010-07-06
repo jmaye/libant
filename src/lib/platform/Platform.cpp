@@ -34,7 +34,8 @@ void Platform::write(ofstream &stream) const {
 }
 
 void Platform::login(const string &strUser, const string &strPwd)
-    throw(IOException) {
+  throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException) {
   String procString("login");
   String userString(strUser);
   String pwdString(strPwd);
@@ -45,7 +46,8 @@ void Platform::login(const string &strUser, const string &strPwd)
   delete result;
 }
 
-void Platform::watchdogReset(double f64Interval) throw(IOException) {
+void Platform::watchdogReset(double f64Interval) throw(IOException,
+  RemoteException, TypeCastException, ObjectCreationException) {
   String procString("Watchdog.reset");
   Float64 intervalFloat64(f64Interval);
   Array argsArray;
@@ -54,8 +56,8 @@ void Platform::watchdogReset(double f64Interval) throw(IOException) {
   delete result;
 }
 
-void Platform::motionSetSpeed(double f64Sd, double f64Thetad)
-  throw(IOException) {
+void Platform::motionSetSpeed(double f64Sd, double f64Thetad) throw(IOException,
+  RemoteException, TypeCastException, ObjectCreationException) {
   String procString("Motion.setSpeed");
   Float64 sdFloat64(f64Sd);
   Float64 thetadFloat64(f64Thetad);
@@ -66,7 +68,8 @@ void Platform::motionSetSpeed(double f64Sd, double f64Thetad)
   delete result;
 }
 
-Speed Platform::motionGetSpeed() throw(IOException) {
+Speed Platform::motionGetSpeed() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException, OutOfBoundException) {
   String procString("Motion.getSpeed");
   Array argsArray;
   const Object *result = call(procString, argsArray);
@@ -81,7 +84,8 @@ Speed Platform::motionGetSpeed() throw(IOException) {
   return speed;
 }
 
-Status Platform::motionGetStatus() throw(IOException) {
+Status Platform::motionGetStatus() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException, OutOfBoundException) {
   String procString("Motion.getStatus");
   Array argsArray;
   const Object *result = call(procString, argsArray);
@@ -96,14 +100,16 @@ Status Platform::motionGetStatus() throw(IOException) {
   return status;
 }
 
-void Platform::motionStop() throw(IOException) {
+void Platform::motionStop() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException) {
   String procString("Motion.stop");
   Array argsArray;
   const Object *result = call(procString, argsArray);
   delete result;
 }
 
-void Platform::motionStop(bool bForce) throw(IOException) {
+void Platform::motionStop(bool bForce) throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException) {
   String procString("Motion.stop");
   Boolean forceBoolean(bForce);
   Array argsArray;
@@ -112,7 +118,8 @@ void Platform::motionStop(bool bForce) throw(IOException) {
   delete result;
 }
 
-void Platform::motionTurn(double f64Angle) throw(IOException) {
+void Platform::motionTurn(double f64Angle) throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException) {
   String procString("Motion.turn");
   Float64 angleFloat64(f64Angle);
   Array argsArray;
@@ -121,7 +128,8 @@ void Platform::motionTurn(double f64Angle) throw(IOException) {
   delete result;
 }
 
-void Platform::motionTurn(double f64Angle, bool bAbsolute) throw(IOException) {
+void Platform::motionTurn(double f64Angle, bool bAbsolute) throw(IOException,
+  RemoteException, TypeCastException, ObjectCreationException) {
   String procString("Motion.turn");
   Float64 angleFloat64(f64Angle);
   Boolean absBoolean(bAbsolute);
@@ -133,7 +141,8 @@ void Platform::motionTurn(double f64Angle, bool bAbsolute) throw(IOException) {
 }
 
 void Platform::motionMoveToPose(double f64X, double f64Y, double f64Theta)
-  throw(IOException) {
+  throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException) {
   String procString("Motion.moveToPose");
   Float64 xFloat64(f64X);
   Float64 yFloat64(f64Y);
@@ -147,7 +156,8 @@ void Platform::motionMoveToPose(double f64X, double f64Y, double f64Theta)
 }
 
 void Platform::motionMoveToPose(double f64X, double f64Y, double f64Theta,
-  bool bBackward) throw(IOException) {
+  bool bBackward) throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException) {
   String procString("Motion.moveToPose");
   Float64 xFloat64(f64X);
   Float64 yFloat64(f64Y);
@@ -162,7 +172,9 @@ void Platform::motionMoveToPose(double f64X, double f64Y, double f64Theta,
   delete result;
 }
 
-Pose Platform::odometryGetPose() throw(IOException) {
+Pose Platform::odometryGetPose()
+  throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException, OutOfBoundException) {
   String procString("Odometry.getPose");
   Array argsArray;
   const Object *result = call(procString, argsArray);
@@ -191,7 +203,9 @@ Pose Platform::odometryGetPose() throw(IOException) {
   return pose;
 }
 
-Pose Platform::odometryGetPose(double f64Time) throw(IOException) {
+Pose Platform::odometryGetPose(double f64Time)
+  throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException, OutOfBoundException) {
   String procString("Odometry.getPose");
   Float64 timeFloat64(f64Time);
   Array argsArray;
@@ -222,7 +236,8 @@ Pose Platform::odometryGetPose(double f64Time) throw(IOException) {
   return pose;
 }
 
-void Platform::odometryUpdate(Pose pose) throw(IOException) {
+void Platform::odometryUpdate(Pose pose) throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException) {
   String procString("Odometry.update");
   Float64 timeFloat64(pose.f64Time);
   Float64Array poseFloat64Array;
@@ -241,7 +256,8 @@ void Platform::odometryUpdate(Pose pose) throw(IOException) {
   const Object *result = call(procString, argsArray);
 }
 
-Version Platform::version() throw(IOException) {
+Version Platform::version() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException, OutOfBoundException) {
   String procString("version");
   Array argsArray;
   const Object *result = call(procString, argsArray);
@@ -254,14 +270,16 @@ Version Platform::version() throw(IOException) {
   return ver;
 }
 
-void Platform::testCrash() throw(IOException) {
+void Platform::testCrash() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException) {
   String procString("Test.crash");
   Array argsArray;
   const Object *result = call(procString, argsArray);
   delete result;
 }
 
-double Platform::testNop() throw(IOException) {
+double Platform::testNop() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException) {
   String procString("Test.nop");
   Array argsArray;
   const Object *result = call(procString, argsArray);
@@ -271,8 +289,8 @@ double Platform::testNop() throw(IOException) {
   return f64Res;
 }
 
-void Platform::testThrow(string strName, string strMessage)
-  throw(IOException) {
+void Platform::testThrow(string strName, string strMessage) throw(IOException,
+  RemoteException, TypeCastException, ObjectCreationException) {
   String procString("Test.throw");
   String nameString(strName);
   String msgString(strMessage);
@@ -283,7 +301,8 @@ void Platform::testThrow(string strName, string strMessage)
   delete result;
 }
 
-vector<string> Platform::getCalls() throw(IOException) {
+vector<string> Platform::getCalls() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException, OutOfBoundException) {
   String procString("getCalls");
   Array argsArray;
   const Object *result = call(procString, argsArray);

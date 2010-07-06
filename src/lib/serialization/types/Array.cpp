@@ -37,7 +37,7 @@ void Array::read(ifstream &stream) {
 void Array::write(ofstream &stream) const {
 }
 
-void Array::read(Connection &stream) {
+void Array::read(Connection &stream) throw(ObjectCreationException) {
   uint32_t u32Length;
   stream >> u32Length;
   for (uint32_t i = 0; i < u32Length; i++) {
@@ -116,7 +116,7 @@ Connection& operator << (Connection &stream,
 }
 
 Connection& operator >> (Connection &stream,
-  Array &obj) {
+  Array &obj) throw(ObjectCreationException) {
   obj.read(stream);
   return stream;
 }

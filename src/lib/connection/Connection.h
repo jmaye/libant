@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "IOException.h"
 #include "RemoteException.h"
+#include "TypeCastException.h"
 #include "Array.h"
 #include "String.h"
 
@@ -34,7 +35,8 @@ class Connection {
 
   void doClose() throw(IOException);
 
-  const Object* sendRequest(const Object &object) throw(IOException);
+  const Object* sendRequest(const Object &object)
+    throw(IOException, ObjectCreationException);
 
   void writeBuffer(uint8_t *au8Buffer, uint32_t u32NbBytes)
     const throw(IOException);
@@ -64,29 +66,31 @@ public:
   bool isOpen() const;
 
   const Object* call(const String &procStr, const Array &argsArray)
-    throw(IOException);
+    throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  void ping() throw(IOException);
+  void ping() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  Connection& operator << (int8_t i8Value);
-  Connection& operator << (uint8_t u8Value);
-  Connection& operator << (int16_t i16Value);
-  Connection& operator << (int32_t i32Value);
-  Connection& operator << (uint32_t u32Value);
-  Connection& operator << (int64_t i64Value);
-  Connection& operator << (const std::string &strValue);
-  Connection& operator << (float f32Value);
-  Connection& operator << (double f64Value);
+  Connection& operator << (int8_t i8Value) throw(IOException);
+  Connection& operator << (uint8_t u8Value) throw(IOException);
+  Connection& operator << (int16_t i16Value) throw(IOException);
+  Connection& operator << (int32_t i32Value) throw(IOException);
+  Connection& operator << (uint32_t u32Value) throw(IOException);
+  Connection& operator << (int64_t i64Value) throw(IOException);
+  Connection& operator << (const std::string &strValue) throw(IOException);
+  Connection& operator << (float f32Value) throw(IOException);
+  Connection& operator << (double f64Value) throw(IOException);
 
-  Connection& operator >> (int8_t &i8Value);
-  Connection& operator >> (uint8_t &u8Value);
-  Connection& operator >> (int16_t &i16Value);
-  Connection& operator >> (int32_t &i32Value);
-  Connection& operator >> (uint32_t &u32Value);
-  Connection& operator >> (int64_t &i64Value);
-  Connection& operator >> (std::string &strValue);
-  Connection& operator >> (float &f32Value);
-  Connection& operator >> (double &f64Value);
+  Connection& operator >> (int8_t &i8Value) throw(IOException);
+  Connection& operator >> (uint8_t &u8Value) throw(IOException);
+  Connection& operator >> (int16_t &i16Value) throw(IOException);
+  Connection& operator >> (int32_t &i32Value) throw(IOException);
+  Connection& operator >> (uint32_t &u32Value) throw(IOException);
+  Connection& operator >> (int64_t &i64Value) throw(IOException);
+  Connection& operator >> (std::string &strValue) throw(IOException);
+  Connection& operator >> (float &f32Value) throw(IOException);
+  Connection& operator >> (double &f64Value) throw(IOException);
 
 protected:
 

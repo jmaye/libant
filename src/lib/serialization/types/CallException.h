@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "String.h"
+#include "ObjectCreationException.h"
 
 #include <iosfwd>
 
@@ -20,7 +21,7 @@ class CallException : public Object {
   friend Connection& operator << (Connection &stream,
     const CallException &obj);
   friend Connection& operator >> (Connection &stream,
-    CallException &obj);
+    CallException &obj) throw(ObjectCreationException);
 
   CallException();
   CallException(const CallException &other);
@@ -30,7 +31,7 @@ class CallException : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
+  virtual void read(Connection &stream) throw(ObjectCreationException);
   virtual void write(Connection &stream) const;
 
   const String *mNameStrPtr;

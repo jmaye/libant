@@ -1,2 +1,2 @@
 remake_add_library(exceptions)
-remake_add_headers(INSTALL exceptions)
+remake_add_headers()

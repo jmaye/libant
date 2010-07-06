@@ -2,6 +2,11 @@
 #define PLATFORM_H
 
 #include "Connection.h"
+#include "IOException.h"
+#include "RemoteException.h"
+#include "TypeCastException.h"
+#include "ObjectCreationException.h"
+#include "OutOfBoundException.h"
 
 #include <iosfwd>
 #include <string>
@@ -62,46 +67,64 @@ public:
   ~Platform();
 
   void login(const std::string &strUser, const std::string &strPwd)
-    throw(IOException);
+    throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  void watchdogReset(double f64Interval) throw(IOException);
+  void watchdogReset(double f64Interval) throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException);
 
-  Version version() throw(IOException);
+  Version version() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException, OutOfBoundException);
 
-  void motionSetSpeed(double f64Sd, double f64Thetad) throw(IOException);
+  void motionSetSpeed(double f64Sd, double f64Thetad) throw(IOException,
+    RemoteException, TypeCastException, ObjectCreationException);
 
-  Speed motionGetSpeed() throw(IOException);
+  Speed motionGetSpeed() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException, OutOfBoundException);
 
-  Status motionGetStatus() throw(IOException);
+  Status motionGetStatus() throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException, OutOfBoundException);
 
-  void motionStop() throw(IOException);
+  void motionStop() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  void motionStop(bool bForce) throw(IOException);
+  void motionStop(bool bForce) throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException);
 
-  void motionTurn(double f64Angle) throw(IOException);
+  void motionTurn(double f64Angle) throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException);
 
-  void motionTurn(double f64Angle, bool bAbsolute) throw(IOException);
+  void motionTurn(double f64Angle, bool bAbsolute) throw(IOException,
+    RemoteException, TypeCastException, ObjectCreationException);
 
   void motionMoveToPose(double f64X, double f64Y, double f64Theta)
-    throw(IOException);
+    throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
   void motionMoveToPose(double f64X, double f64Y, double f64Theta,
-    bool bBackward) throw(IOException);
+    bool bBackward) throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  Pose odometryGetPose() throw(IOException);
+  Pose odometryGetPose() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException, OutOfBoundException);
 
-  Pose odometryGetPose(double f64Time) throw(IOException);
+  Pose odometryGetPose(double f64Time) throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException, OutOfBoundException);
 
-  void odometryUpdate(Pose pose) throw(IOException);
+  void odometryUpdate(Pose pose) throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException);
 
-  void testCrash() throw(IOException);
+  void testCrash() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  double testNop() throw(IOException);
+  double testNop() throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
-  void testThrow(std::string strName, std::string strMessage)
-    throw(IOException);
+  void testThrow(std::string strName, std::string strMessage) throw(IOException,
+    RemoteException, TypeCastException, ObjectCreationException);
 
-  std::vector<std::string> getCalls() throw(IOException);
+  std::vector<std::string> getCalls() throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException, OutOfBoundException);
 
 protected:
 

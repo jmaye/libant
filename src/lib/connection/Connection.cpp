@@ -59,14 +59,15 @@ bool Connection::isOpen() const {
 }
 
 const Object* Connection::call(const String &procStr, const Array &argsArray)
-  throw(IOException) {
+  throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException) {
   Call callObject(procStr.clone(), argsArray.clone());
   const Object *result = sendRequest(callObject);
   if (result->instanceof<CallResult>() == false) {
     doClose();
     if (result->instanceof<CallException>() == false) {
       delete result;
-      throw IOException("Invalid result type");
+      throw IOException("call: Invalid result type");
     }
     else {
       const string nameStr =
@@ -80,14 +81,15 @@ const Object* Connection::call(const String &procStr, const Array &argsArray)
   return result;
 }
 
-void Connection::ping() throw(IOException) {
+void Connection::ping() throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException) {
   Void voidObject;
   const Object *result = sendRequest(voidObject);
   if (result->instanceof<Void>() == false) {
     doClose();
     if (result->instanceof<CallException>() == false) {
       delete result;
-      throw IOException("Invalid result type");
+      throw IOException("ping: Invalid result type");
     }
     else {
       const string nameStr =
@@ -104,7 +106,7 @@ void Connection::ping() throw(IOException) {
 void Connection::doOpen() throw(IOException) {
   mi32Socket = socket(AF_INET, SOCK_STREAM, 0);
   if (mi32Socket == -1)
-    throw IOException("Socket creation failed");
+    throw IOException("doOpen: Socket creation failed");
 
   struct sockaddr_in server;
   memset(&server, 0, sizeof(struct sockaddr_in));
@@ -114,20 +116,20 @@ void Connection::doOpen() throw(IOException) {
   int32_t i32Res = connect(mi32Socket, (struct sockaddr*)&server,
     sizeof(server));
   if (i32Res == -1)
-    throw IOException("Socket connection failed");
+    throw IOException("doOpen: Socket connection failed");
 }
 
 void Connection::doClose() throw(IOException) {
   if (mi32Socket != 0) {
     int32_t i32Res = ::close(mi32Socket);
     if (i32Res == -1)
-      throw IOException("Socket closing failed");
+      throw IOException("doClose: Socket closing failed");
   }
   mi32Socket = 0;
 }
 
 const Object* Connection::sendRequest(const Object &object)
-  throw(IOException) {
+  throw(IOException, ObjectCreationException) {
   if(mi32Socket == 0)
     doOpen();
 
@@ -154,14 +156,14 @@ void Connection::writeBuffer(uint8_t *au8Buffer, uint32_t u32NbBytes)
   int32_t i32Res = select(mi32Socket + 1, (fd_set*)0, &writeFlags,
     (fd_set*)0, &waitd);
   if(i32Res < 0)
-    throw IOException("Write select failed");
+    throw IOException("writeBuffer: Write select failed");
   if (FD_ISSET(mi32Socket, &writeFlags)) {
     FD_CLR(mi32Socket, &writeFlags);
     if (::write(mi32Socket, au8Buffer, u32NbBytes) != u32NbBytes)
-      throw IOException("Write failed");
+      throw IOException("writeBuffer: Write failed");
   }
   else
-    throw IOException("Write timeout");
+    throw IOException("writeBuffer: Write timeout");
 }
 
 uint8_t Connection::readByte() const throw(IOException) {
@@ -174,15 +176,15 @@ uint8_t Connection::readByte() const throw(IOException) {
   int32_t i32Res = select(mi32Socket + 1, &readFlags, (fd_set*)0,
     (fd_set*)0, &waitd);
   if(i32Res < 0)
-    throw IOException("Read select failed");
+    throw IOException("readByte: Read select failed");
   uint8_t u8Byte;
   if (FD_ISSET(mi32Socket, &readFlags)) {
     FD_CLR(mi32Socket, &readFlags);
     if (::read(mi32Socket, &u8Byte, 1) == -1)
-      throw IOException("Read failed");
+      throw IOException("readByte: Read failed");
   }
   else
-    throw IOException("Read timeout");
+    throw IOException("readByte: Read timeout");
   return u8Byte;
 }
 
@@ -222,68 +224,69 @@ ifstream& operator >> (ifstream &stream,
   return stream;
 }
 
-Connection& Connection::operator << (int8_t i8Value) {
+Connection& Connection::operator << (int8_t i8Value) throw(IOException) {
   writeBuffer((uint8_t*)&i8Value, 1);
   return *this;
 }
 
-Connection& Connection::operator << (uint8_t u8Value) {
+Connection& Connection::operator << (uint8_t u8Value) throw(IOException) {
   writeBuffer(&u8Value, 1);
   return *this;
 }
 
-Connection& Connection::operator << (int16_t i16Value) {
+Connection& Connection::operator << (int16_t i16Value) throw(IOException) {
   writeBuffer((uint8_t*)&i16Value, 2);
   return *this;
 }
 
-Connection& Connection::operator << (int32_t i32Value) {
+Connection& Connection::operator << (int32_t i32Value) throw(IOException) {
   writeBuffer((uint8_t*)&i32Value, 4);
   return *this;
 }
 
-Connection& Connection::operator << (uint32_t u32Value) {
+Connection& Connection::operator << (uint32_t u32Value) throw(IOException) {
   writeBuffer((uint8_t*)&u32Value, 4);
   return *this;
 }
 
-Connection& Connection::operator << (int64_t i64Value) {
+Connection& Connection::operator << (int64_t i64Value) throw(IOException) {
   writeBuffer((uint8_t*)&i64Value, 8);
   return *this;
 }
 
-Connection& Connection::operator << (const string &strValue) {
+Connection& Connection::operator << (const string &strValue)
+  throw(IOException) {
   writeBuffer((uint8_t*)strValue.c_str(), strValue.length());
   return *this;
 }
 
-Connection& Connection::operator << (float f32Value) {
+Connection& Connection::operator << (float f32Value) throw(IOException) {
   writeBuffer((uint8_t*)&f32Value, 4);
   return *this;
 }
 
-Connection& Connection::operator << (double f64Value) {
+Connection& Connection::operator << (double f64Value) throw(IOException) {
   writeBuffer((uint8_t*)&f64Value, 8);
   return *this;
 }
 
-Connection& Connection::operator >> (int8_t &i8Value) {
+Connection& Connection::operator >> (int8_t &i8Value) throw(IOException) {
   i8Value = (int8_t)readByte();
   return *this;
 }
 
-Connection& Connection::operator >> (uint8_t &u8Value) {
+Connection& Connection::operator >> (uint8_t &u8Value) throw(IOException) {
   u8Value = readByte();
   return *this;
 }
 
-Connection& Connection::operator >> (int16_t &i16Value) {
+Connection& Connection::operator >> (int16_t &i16Value) throw(IOException) {
   ((uint8_t*)&i16Value)[0] = readByte();
   ((uint8_t*)&i16Value)[1] = readByte();
   return *this;
 }
 
-Connection& Connection::operator >> (int32_t &i32Value) {
+Connection& Connection::operator >> (int32_t &i32Value) throw(IOException) {
   ((uint8_t*)&i32Value)[0] = readByte();
   ((uint8_t*)&i32Value)[1] = readByte();
   ((uint8_t*)&i32Value)[2] = readByte();
@@ -291,7 +294,7 @@ Connection& Connection::operator >> (int32_t &i32Value) {
   return *this;
 }
 
-Connection& Connection::operator >> (uint32_t &u32Value) {
+Connection& Connection::operator >> (uint32_t &u32Value) throw(IOException) {
   ((uint8_t*)&u32Value)[0] = readByte();
   ((uint8_t*)&u32Value)[1] = readByte();
   ((uint8_t*)&u32Value)[2] = readByte();
@@ -299,7 +302,7 @@ Connection& Connection::operator >> (uint32_t &u32Value) {
   return *this;
 }
 
-Connection& Connection::operator >> (int64_t &i64Value) {
+Connection& Connection::operator >> (int64_t &i64Value) throw(IOException) {
   ((uint8_t*)&i64Value)[0] = readByte();
   ((uint8_t*)&i64Value)[1] = readByte();
   ((uint8_t*)&i64Value)[2] = readByte();
@@ -311,7 +314,7 @@ Connection& Connection::operator >> (int64_t &i64Value) {
   return *this;
 }
 
-Connection& Connection::operator >> (std::string &strValue) {
+Connection& Connection::operator >> (std::string &strValue) throw(IOException) {
   uint32_t u32Length;
   ((uint8_t*)&u32Length)[0] = readByte();
   ((uint8_t*)&u32Length)[1] = readByte();
@@ -322,7 +325,7 @@ Connection& Connection::operator >> (std::string &strValue) {
   return *this;
 }
 
-Connection& Connection::operator >> (float &f32Value) {
+Connection& Connection::operator >> (float &f32Value) throw(IOException) {
   ((uint8_t*)&f32Value)[0] = readByte();
   ((uint8_t*)&f32Value)[1] = readByte();
   ((uint8_t*)&f32Value)[2] = readByte();
@@ -330,7 +333,7 @@ Connection& Connection::operator >> (float &f32Value) {
   return *this;
 }
 
-Connection& Connection::operator >> (double &f64Value) {
+Connection& Connection::operator >> (double &f64Value) throw(IOException) {
   ((uint8_t*)&f64Value)[0] = readByte();
   ((uint8_t*)&f64Value)[1] = readByte();
   ((uint8_t*)&f64Value)[2] = readByte();
