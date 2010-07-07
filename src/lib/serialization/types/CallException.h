@@ -2,12 +2,12 @@
 #define CALLEXCEPTION_H
 
 #include "Object.h"
-#include "String.h"
 #include "ObjectCreationException.h"
 
 #include <iosfwd>
 
 class Connection;
+class String;
 
 class CallException : public Object {
   friend std::ostream& operator << (std::ostream &stream,

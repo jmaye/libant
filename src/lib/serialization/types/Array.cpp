@@ -1,4 +1,5 @@
 #include "Array.h"
+
 #include "Connection.h"
 #include "TypesFactory.h"
 

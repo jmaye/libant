@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-class OutOfBoundException : public std::runtime_error {
+class OutOfBoundException : public std::range_error {
   OutOfBoundException& operator = (const OutOfBoundException &other);
 
 public:

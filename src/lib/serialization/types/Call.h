@@ -2,11 +2,11 @@
 #define CALL_H
 
 #include "Object.h"
-#include "String.h"
-#include "Array.h"
 
 #include <iosfwd>
 
+class String;
+class Array;
 class Connection;
 
 class Call : public Object {

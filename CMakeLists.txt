@@ -27,6 +27,12 @@ remake_pack_deb(
 )
 
 remake_pack_deb(
+  COMPONENT test
+  DESCRIPTION "Test programs"
+  libant
+)
+
+remake_pack_deb(
   COMPONENT doc
   DESCRIPTION "Documentation"
 )

@@ -1,4 +1,5 @@
 #include "Float32.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -10,7 +11,8 @@ using namespace std;
 
 const Float32 Float32::mProto;
 
-Float32::Float32() : Object(0x0b) {
+Float32::Float32() : Object(0x0b),
+                     mf32Value(0) {
 }
 
 Float32::Float32(float f32Value) : Object(mProto),

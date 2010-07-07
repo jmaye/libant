@@ -1,4 +1,5 @@
 #include "Float64.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -10,7 +11,8 @@ using namespace std;
 
 const Float64 Float64::mProto;
 
-Float64::Float64() : Object(0x0d) {
+Float64::Float64() : Object(0x0d),
+                     mf64Value(0) {
 }
 
 Float64::Float64(double f64Value) : Object(mProto),

@@ -1,4 +1,5 @@
 #include "Int16Array.h"
+
 #include "Connection.h"
 
 #include <iostream>

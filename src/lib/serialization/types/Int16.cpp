@@ -1,4 +1,5 @@
 #include "Int16.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -8,7 +9,8 @@ using namespace std;
 
 const Int16 Int16::mProto;
 
-Int16::Int16() : Object(0x05) {
+Int16::Int16() : Object(0x05),
+                 ms16Value(0) {
 }
 
 Int16::Int16(int16_t s16Value) : Object(mProto),

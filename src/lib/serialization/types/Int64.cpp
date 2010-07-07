@@ -1,4 +1,5 @@
 #include "Int64.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -8,7 +9,8 @@ using namespace std;
 
 const Int64 Int64::mProto;
 
-Int64::Int64() : Object(0x09) {
+Int64::Int64() : Object(0x09),
+                 ms64Value(0) {
 }
 
 Int64::Int64(int64_t s64Value) : Object(mProto),

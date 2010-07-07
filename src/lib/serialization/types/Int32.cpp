@@ -1,4 +1,5 @@
 #include "Int32.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -8,7 +9,8 @@ using namespace std;
 
 const Int32 Int32::mProto;
 
-Int32::Int32() : Object(0x07) {
+Int32::Int32() : Object(0x07),
+                 ms32Value(0) {
 }
 
 Int32::Int32(int32_t s32Value) : Object(mProto),

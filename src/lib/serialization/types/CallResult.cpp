@@ -1,4 +1,5 @@
 #include "CallResult.h"
+
 #include "Connection.h"
 #include "TypesFactory.h"
 
@@ -9,14 +10,16 @@ using namespace std;
 
 const CallResult CallResult::mProto;
 
-CallResult::CallResult() : Object(0x13) {
+CallResult::CallResult() : Object(0x13),
+                           mObjectPtr(0) {
 }
 
 CallResult::CallResult(const CallResult &other) : Object(other) {
 }
 
 CallResult::~CallResult() {
-  delete mObjectPtr;
+  if (mObjectPtr != 0)
+    delete mObjectPtr;
 }
 
 void CallResult::read(istream &stream) {

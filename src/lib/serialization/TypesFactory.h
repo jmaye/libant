@@ -1,12 +1,13 @@
 #ifndef TYPESFACTORY_H
 #define TYPESFACTORY_H
 
-#include "Object.h"
 #include "ObjectCreationException.h"
 
 #include <map>
 
 #include <stdint.h>
+
+class Object;
 
 class TypesFactory {
   static std::map<uint8_t, const Object*> mTypesMap;

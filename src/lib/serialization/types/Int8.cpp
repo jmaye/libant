@@ -1,4 +1,5 @@
 #include "Int8.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -8,7 +9,8 @@ using namespace std;
 
 const Int8 Int8::mProto;
 
-Int8::Int8() : Object(0x03) {
+Int8::Int8() : Object(0x03),
+               ms8Value(0) {
 }
 
 Int8::Int8(int8_t s8Value) : Object(mProto),

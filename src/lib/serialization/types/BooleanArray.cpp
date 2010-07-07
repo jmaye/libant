@@ -1,4 +1,6 @@
 #include "BooleanArray.h"
+
+#include "OutOfBoundException.h"
 #include "Connection.h"
 
 #include <iostream>

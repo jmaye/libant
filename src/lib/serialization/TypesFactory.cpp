@@ -1,5 +1,7 @@
 #include "TypesFactory.h"
 
+#include "Object.h"
+
 #include <iostream>
 
 using namespace std;

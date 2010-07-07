@@ -1,5 +1,8 @@
 #include "Call.h"
+
 #include "Connection.h"
+#include "String.h"
+#include "Array.h"
 
 #include <iostream>
 #include <fstream>
@@ -8,7 +11,9 @@ using namespace std;
 
 const Call Call::mProto;
 
-Call::Call() : Object(0x12) {
+Call::Call() : Object(0x12),
+               mProcStrPtr(0),
+               mArgsArrayPtr(0) {
 }
 
 Call::Call(const String *procStrPtr, const Array *argsArrayPtr)
@@ -21,8 +26,10 @@ Call::Call(const Call &other) : Object(other) {
 }
 
 Call::~Call() {
-  delete mProcStrPtr;
-  delete mArgsArrayPtr;
+  if (mProcStrPtr != 0)
+    delete mProcStrPtr;
+  if (mArgsArrayPtr != 0)
+    delete mArgsArrayPtr;
 }
 
 void Call::read(istream &stream) {

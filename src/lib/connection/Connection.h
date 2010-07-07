@@ -1,17 +1,19 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include "Object.h"
 #include "IOException.h"
 #include "RemoteException.h"
 #include "TypeCastException.h"
-#include "Array.h"
-#include "String.h"
+#include "ObjectCreationException.h"
 
 #include <iosfwd>
 #include <string>
 
 #include <stdint.h>
+
+class Object;
+class Array;
+class String;
 
 class Connection {
   friend std::ostream& operator << (std::ostream &stream,

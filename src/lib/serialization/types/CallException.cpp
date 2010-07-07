@@ -1,5 +1,7 @@
 #include "CallException.h"
+
 #include "Connection.h"
+#include "String.h"
 #include "TypesFactory.h"
 
 #include <iostream>
@@ -9,16 +11,22 @@ using namespace std;
 
 const CallException CallException::mProto;
 
-CallException::CallException() : Object(0x14) {
+CallException::CallException() : Object(0x14),
+                                 mNameStrPtr(0),
+                                 mMsgStrPtr(0),
+                                 mObjectPtr(0) {
 }
 
 CallException::CallException(const CallException &other) : Object(other) {
 }
 
 CallException::~CallException() {
-  delete mNameStrPtr;
-  delete mMsgStrPtr;
-  delete mObjectPtr;
+  if (mNameStrPtr != 0)
+    delete mNameStrPtr;
+  if (mMsgStrPtr != 0)
+    delete mMsgStrPtr;
+  if (mObjectPtr != 0)
+    delete mObjectPtr;
 }
 
 void CallException::read(istream &stream) {

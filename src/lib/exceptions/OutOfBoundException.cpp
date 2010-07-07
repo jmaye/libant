@@ -3,5 +3,5 @@
 using namespace std;
 
 OutOfBoundException::OutOfBoundException(const string &msg)
-  : runtime_error(msg) {
+  : range_error(msg) {
 }

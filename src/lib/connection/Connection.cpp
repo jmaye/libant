@@ -1,9 +1,12 @@
 #include "Connection.h"
 
+#include "Object.h"
 #include "Void.h"
 #include "Call.h"
 #include "CallResult.h"
 #include "CallException.h"
+#include "Array.h"
+#include "String.h"
 #include "TypesFactory.h"
 
 #include <iostream>

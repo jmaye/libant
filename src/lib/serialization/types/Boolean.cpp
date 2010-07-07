@@ -1,4 +1,5 @@
 #include "Boolean.h"
+
 #include "Connection.h"
 
 #include <iostream>
@@ -10,7 +11,8 @@ using namespace std;
 
 const Boolean Boolean::mProto;
 
-Boolean::Boolean() : Object(0x01) {
+Boolean::Boolean() : Object(0x01),
+                     mbValue(false) {
 }
 
 Boolean::Boolean(bool bValue) : Object(mProto),

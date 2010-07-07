@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-class ObjectCreationException : public std::out_of_range {
+class ObjectCreationException : public std::range_error {
   ObjectCreationException& operator = (const ObjectCreationException &other);
 
 public:

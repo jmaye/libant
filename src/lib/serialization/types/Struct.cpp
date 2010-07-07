@@ -1,5 +1,7 @@
 #include "Struct.h"
 
+#include "String.h"
+
 #include <iostream>
 #include <fstream>
 

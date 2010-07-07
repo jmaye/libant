@@ -3,5 +3,5 @@
 using namespace std;
 
 ObjectCreationException::ObjectCreationException(const string &msg)
-  : out_of_range(msg) {
+  : range_error(msg) {
 }

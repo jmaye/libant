@@ -2,12 +2,12 @@
 #define STRUCT_H
 
 #include "Object.h"
-#include "String.h"
 
 #include <iosfwd>
 #include <map>
 
 class Connection;
+class String;
 
 class Struct : public Object {
   friend std::ostream& operator << (std::ostream &stream,
