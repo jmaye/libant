@@ -311,8 +311,9 @@ public:
     * \throw TypeCastException Platform returned unexpected type
     * \throw ObjectCreationException Failed to create returned object
     */
-  void testThrow(std::string strName, std::string strMessage) throw(IOException,
-    RemoteException, TypeCastException, ObjectCreationException);
+  void testThrow(const std::string &strName, const std::string &strMessage)
+    throw(IOException, RemoteException, TypeCastException,
+    ObjectCreationException);
 
   /** \brief Get available RPC calls on the platform
     * \return Vector of strings

@@ -289,8 +289,9 @@ double Platform::testNop() throw(IOException, RemoteException,
   return f64Res;
 }
 
-void Platform::testThrow(string strName, string strMessage) throw(IOException,
-  RemoteException, TypeCastException, ObjectCreationException) {
+void Platform::testThrow(const string &strName, const string &strMessage)
+  throw(IOException, RemoteException, TypeCastException,
+  ObjectCreationException) {
   String procString("Test.throw");
   String nameString(strName);
   String msgString(strMessage);
