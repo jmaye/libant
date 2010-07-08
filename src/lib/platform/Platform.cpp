@@ -254,6 +254,7 @@ void Platform::odometryUpdate(Pose pose) throw(IOException, RemoteException,
   argsArray.pushElement(timeFloat64.clone());
   argsArray.pushElement(poseFloat64Array.clone());
   const Object *result = call(procString, argsArray);
+  delete result;
 }
 
 Version Platform::version() throw(IOException, RemoteException,

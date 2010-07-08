@@ -42,7 +42,7 @@ void Struct::write(Connection &stream) const {
 }
 
 Struct* Struct::clone() const {
-  new Struct(*this);
+  return new Struct(*this);
 }
 
 ostream& operator << (ostream &stream,
