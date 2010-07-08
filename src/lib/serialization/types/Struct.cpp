@@ -1,5 +1,7 @@
 #include "Struct.h"
 
+#include "Connection.h"
+#include "TypesFactory.h"
 #include "String.h"
 
 #include <iostream>
@@ -16,9 +18,8 @@ Struct::Struct(const Struct &other) : Object(other) {
 }
 
 Struct::~Struct() {
-  std::map<const String*, const Object*>::const_iterator it;
+  std::map<string, const Object*>::const_iterator it;
   for (it = mStructMap.begin(); it != mStructMap.end(); it++) {
-    delete (*it).first;
     delete (*it).second;
   }
 }
@@ -35,7 +36,30 @@ void Struct::read(ifstream &stream) {
 void Struct::write(ofstream &stream) const {
 }
 
-void Struct::read(Connection &stream) {
+void Struct::read(Connection &stream) throw(ObjectCreationException) {
+  uint32_t u32Length;
+
+  stream >> u32Length;
+
+  for (uint32_t i = 0; i < u32Length; i++) {
+    String keyString;
+    stream >> keyString;
+    uint8_t u8TypeID;
+    stream >> u8TypeID;
+    const Object *objectPtr = TypesFactory::createObject(u8TypeID);
+    stream >> (Object&)*objectPtr;
+    mStructMap[keyString.getValue()] = objectPtr;
+  }
+}
+
+const Object* Struct::getObject(const std::string &strRequest) const
+  throw(OutOfBoundException) {
+  std::map<string, const Object*>::const_iterator it =
+    mStructMap.find(strRequest);
+  if (it == mStructMap.end())
+    throw OutOfBoundException("Struct");
+  else
+    return (*it).second;
 }
 
 void Struct::write(Connection &stream) const {
@@ -43,6 +67,10 @@ void Struct::write(Connection &stream) const {
 
 Struct* Struct::clone() const {
   return new Struct(*this);
+}
+
+uint32_t Struct::getLength() const {
+  return mStructMap.size();
 }
 
 ostream& operator << (ostream &stream,

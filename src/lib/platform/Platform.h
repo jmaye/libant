@@ -82,6 +82,15 @@ struct Pose {
   double f64YAngleCoVar; //!< Y-Orientation covariance [m*rad]
 };
 
+
+/** \brief Structure defining the raw odometry of the platform
+  */
+struct RawOdometry {
+  double f64Time;  //!< Request time as absolute UTC [s]
+  double f64Left;  //!< Left wheel [tick]
+  double f64Right; //!< Right wheel [tick]
+};
+
 /** \brief Platform interface
   */
 class Platform : public Connection {
@@ -324,6 +333,17 @@ public:
     * \throw OutOfBoundException Try to access an array with wrong index
     */
   std::vector<std::string> getCalls() throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException, OutOfBoundException);
+
+  /** \brief Get raw odometry of the platform
+    * \return Raw odometry
+    * \throw IOException Communication failure
+    * \throw RemoteException Exception occurred on the platform
+    * \throw TypeCastException Platform returned unexpected type
+    * \throw ObjectCreationException Failed to create returned object
+    * \throw OutOfBoundException Try to access an array with wrong index
+    */
+  RawOdometry getRawOdometry() throw(IOException, RemoteException,
     TypeCastException, ObjectCreationException, OutOfBoundException);
 
 protected:

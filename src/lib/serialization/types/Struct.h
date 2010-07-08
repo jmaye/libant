@@ -2,9 +2,13 @@
 #define STRUCT_H
 
 #include "Object.h"
+#include "ObjectCreationException.h"
+#include "OutOfBoundException.h"
 
 #include <iosfwd>
 #include <map>
+
+#include <stdint.h>
 
 class Connection;
 class String;
@@ -31,15 +35,20 @@ class Struct : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
+  virtual void read(Connection &stream) throw(ObjectCreationException);
   virtual void write(Connection &stream) const;
 
-  std::map<const String*, const Object*> mStructMap;
+  std::map<std::string, const Object*> mStructMap;
 
 public:
   ~Struct();
 
   virtual Struct* clone() const;
+
+  uint32_t getLength() const;
+
+  const Object* getObject(const std::string &strRequest) const
+    throw(OutOfBoundException);
 
   static const Struct mProto;
 

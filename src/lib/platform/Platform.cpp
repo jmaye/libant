@@ -8,6 +8,7 @@
 #include "Int32Array.h"
 #include "CallResult.h"
 #include "StringArray.h"
+#include "Struct.h"
 
 #include <iostream>
 #include <fstream>
@@ -73,13 +74,12 @@ Speed Platform::motionGetSpeed() throw(IOException, RemoteException,
   String procString("Motion.getSpeed");
   Array argsArray;
   const Object *result = call(procString, argsArray);
+  const Float64Array &speedFloat64Array = 
+    result->typeCast<CallResult>().getObject()->typeCast<Float64Array>();
   Speed speed;
-  speed.f64Time = result->typeCast<CallResult>().getObject()
-    ->typeCast<Float64Array>().getElement(0);
-  speed.f64Translation = result->typeCast<CallResult>().getObject()
-    ->typeCast<Float64Array>().getElement(1);
-  speed.f64Rotation = result->typeCast<CallResult>().getObject()
-    ->typeCast<Float64Array>().getElement(2);
+  speed.f64Time        = speedFloat64Array.getElement(0);
+  speed.f64Translation = speedFloat64Array.getElement(1);
+  speed.f64Rotation    = speedFloat64Array.getElement(2);
   delete result;
   return speed;
 }
@@ -89,13 +89,12 @@ Status Platform::motionGetStatus() throw(IOException, RemoteException,
   String procString("Motion.getStatus");
   Array argsArray;
   const Object *result = call(procString, argsArray);
+  const Array &statusArray = 
+    result->typeCast<CallResult>().getObject()->typeCast<Array>();
   Status status;
-  status.f64Time = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(0)->typeCast<Float64>().getValue();
-  status.strState = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<String>().getValue();
-  status.strResult = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(2)->typeCast<String>().getValue();
+  status.f64Time   = statusArray.getElement(0)->typeCast<Float64>().getValue();
+  status.strState  = statusArray.getElement(1)->typeCast<String>().getValue();
+  status.strResult = statusArray.getElement(2)->typeCast<String>().getValue();
   delete result;
   return status;
 }
@@ -178,27 +177,21 @@ Pose Platform::odometryGetPose()
   String procString("Odometry.getPose");
   Array argsArray;
   const Object *result = call(procString, argsArray);
+  const Float64Array &odoFloat64Array =
+    result->typeCast<CallResult>().getObject()->typeCast<Array>().getElement(1)
+    ->typeCast<Float64Array>();
   Pose pose;
   pose.f64Time = result->typeCast<CallResult>().getObject()
     ->typeCast<Array>().getElement(0)->typeCast<Float64>().getValue();
-  pose.f64X = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(0);
-  pose.f64Y = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(1);
-  pose.f64Angle = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(2);
-  pose.f64XVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(3);
-  pose.f64YVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(4);
-  pose.f64AngleVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(5);
-  pose.f64XYCoVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(6);
-  pose.f64XAngleCoVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(7);
-  pose.f64YAngleCoVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(8);
+  pose.f64X           = odoFloat64Array.getElement(0);
+  pose.f64Y           = odoFloat64Array.getElement(1);
+  pose.f64Angle       = odoFloat64Array.getElement(2);
+  pose.f64XVar        = odoFloat64Array.getElement(3);
+  pose.f64YVar        = odoFloat64Array.getElement(4);
+  pose.f64AngleVar    = odoFloat64Array.getElement(5);
+  pose.f64XYCoVar     = odoFloat64Array.getElement(6);
+  pose.f64XAngleCoVar = odoFloat64Array.getElement(7);
+  pose.f64YAngleCoVar = odoFloat64Array.getElement(8);
   delete result;
   return pose;
 }
@@ -211,27 +204,21 @@ Pose Platform::odometryGetPose(double f64Time)
   Array argsArray;
   argsArray.pushElement(timeFloat64.clone());
   const Object *result = call(procString, argsArray);
+  const Float64Array &odoFloat64Array =
+    result->typeCast<CallResult>().getObject()->typeCast<Array>().getElement(1)
+    ->typeCast<Float64Array>();
   Pose pose;
   pose.f64Time = result->typeCast<CallResult>().getObject()
     ->typeCast<Array>().getElement(0)->typeCast<Float64>().getValue();
-  pose.f64X = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(0);
-  pose.f64Y = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(1);
-  pose.f64Angle = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(2);
-  pose.f64XVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(3);
-  pose.f64YVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(4);
-  pose.f64AngleVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(5);
-  pose.f64XYCoVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(6);
-  pose.f64XAngleCoVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(7);
-  pose.f64YAngleCoVar = result->typeCast<CallResult>().getObject()
-    ->typeCast<Array>().getElement(1)->typeCast<Float64Array>().getElement(8);
+  pose.f64X           = odoFloat64Array.getElement(0);
+  pose.f64Y           = odoFloat64Array.getElement(1);
+  pose.f64Angle       = odoFloat64Array.getElement(2);
+  pose.f64XVar        = odoFloat64Array.getElement(3);
+  pose.f64YVar        = odoFloat64Array.getElement(4);
+  pose.f64AngleVar    = odoFloat64Array.getElement(5);
+  pose.f64XYCoVar     = odoFloat64Array.getElement(6);
+  pose.f64XAngleCoVar = odoFloat64Array.getElement(7);
+  pose.f64YAngleCoVar = odoFloat64Array.getElement(8);
   delete result;
   return pose;
 }
@@ -262,11 +249,11 @@ Version Platform::version() throw(IOException, RemoteException,
   String procString("version");
   Array argsArray;
   const Object *result = call(procString, argsArray);
+  const Int32Array &verInt32Array =
+    result->typeCast<CallResult>().getObject()->typeCast<Int32Array>();
   Version ver;
-  ver.i32Major = result->typeCast<CallResult>().getObject()
-    ->typeCast<Int32Array>().getElement(0);
-  ver.i32Minor = result->typeCast<CallResult>().getObject()
-    ->typeCast<Int32Array>().getElement(1);
+  ver.i32Major = verInt32Array.getElement(0);
+  ver.i32Minor = verInt32Array.getElement(1);
   delete result;
   return ver;
 }
@@ -309,13 +296,34 @@ vector<string> Platform::getCalls() throw(IOException, RemoteException,
   Array argsArray;
   const Object *result = call(procString, argsArray);
   vector<string> strVector;
-  uint32_t u32Length = result->typeCast<CallResult>().getObject()
-    ->typeCast<StringArray>().getLength();
+  const StringArray &callsStringArray =
+    result->typeCast<CallResult>().getObject()->typeCast<StringArray>();
+  uint32_t u32Length = callsStringArray.getLength();
   for (uint32_t i = 0; i < u32Length; i++)
-    strVector.push_back(result->typeCast<CallResult>().getObject()
-    ->typeCast<StringArray>().getElement(i));
+    strVector.push_back(callsStringArray.getElement(i));
   delete result;
   return strVector;
+}
+
+RawOdometry Platform::getRawOdometry() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException, OutOfBoundException) {
+  String procString("inspect");
+  StringArray stringArray;
+  stringArray.pushElement("OdometryPipe");
+  Array argsArray;
+  argsArray.pushElement(stringArray.clone());
+  const Object *result = call(procString, argsArray);
+  const Float64Array &float64Ticks = result->typeCast<CallResult>().getObject()
+    ->typeCast<Struct>().getObject("OdometryPipe")
+    ->typeCast<Struct>().getObject("data")
+    ->typeCast<Struct>().getObject("rows")->typeCast<Float64Array>();
+  uint32_t u32ArrayLength = float64Ticks.getLength();
+  RawOdometry rawOdometry;
+  rawOdometry.f64Time  = float64Ticks.getElement(u32ArrayLength - 3);
+  rawOdometry.f64Left  = float64Ticks.getElement(u32ArrayLength - 2);
+  rawOdometry.f64Right = float64Ticks.getElement(u32ArrayLength - 1);
+  delete result;
+  return rawOdometry;
 }
 
 ostream& operator << (ostream &stream,
