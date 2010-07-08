@@ -17,6 +17,7 @@
 #include <sys/select.h>
 #include <sys/time.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
@@ -111,14 +112,17 @@ void Connection::doOpen() throw(IOException) {
   if (mi32Socket == -1)
     throw IOException("doOpen: Socket creation failed");
 
+  int32_t i32Flag = 1;
+  if (setsockopt(mi32Socket, IPPROTO_TCP, TCP_NODELAY, (char*)&i32Flag,
+    sizeof(int32_t)) == -1)
+    throw IOException("doOpen: Set TCP_NODELAY failed");
+
   struct sockaddr_in server;
   memset(&server, 0, sizeof(struct sockaddr_in));
   server.sin_family = AF_INET;
   server.sin_addr.s_addr = inet_addr(mstrHost.c_str());
   server.sin_port = htons(mu32Port);
-  int32_t i32Res = connect(mi32Socket, (struct sockaddr*)&server,
-    sizeof(server));
-  if (i32Res == -1)
+  if (connect(mi32Socket, (struct sockaddr*)&server, sizeof(server)) == -1)
     throw IOException("doOpen: Socket connection failed");
 }
 
