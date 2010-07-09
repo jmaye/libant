@@ -35,7 +35,7 @@ void String::read(ifstream &stream) {
 void String::write(ofstream &stream) const {
 }
 
-void String::read(Connection &stream) {
+void String::read(Connection &stream) throw(IOException) {
   uint32_t u32Length;
   stream >> u32Length;
 
@@ -46,7 +46,7 @@ void String::read(Connection &stream) {
   }
 }
 
-void String::write(Connection &stream) const {
+void String::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mstrValue.length();
   stream << mu8TypeID << u32Length << mstrValue;
 }
@@ -59,7 +59,7 @@ const string& String::getValue() const {
   return mstrValue;
 }
 
-void String::callWrite(Connection &stream) const {
+void String::callWrite(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mstrValue.length();
   stream << u32Length << mstrValue;
 }
@@ -89,13 +89,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const String &obj) {
+  const String &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  String &obj) {
+  String &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

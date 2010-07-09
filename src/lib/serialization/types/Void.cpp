@@ -1,5 +1,7 @@
 #include "Void.h"
+
 #include "Connection.h"
+#include "IOException.h"
 
 #include <iostream>
 #include <fstream>
@@ -29,10 +31,10 @@ void Void::read(ifstream &stream) {
 void Void::write(ofstream &stream) const {
 }
 
-void Void::read(Connection &stream) {
+void Void::read(Connection &stream) throw(IOException) {
 }
 
-void Void::write(Connection &stream) const {
+void Void::write(Connection &stream) const throw(IOException) {
   stream << mu8TypeID;
 }
 
@@ -65,13 +67,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Void &obj) {
+  const Void &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Void &obj) {
+  Void &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

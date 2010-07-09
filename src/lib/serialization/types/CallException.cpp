@@ -41,7 +41,8 @@ void CallException::read(ifstream &stream) {
 void CallException::write(ofstream &stream) const {
 }
 
-void CallException::read(Connection &stream) throw(ObjectCreationException) {
+void CallException::read(Connection &stream)
+  throw(ObjectCreationException, IOException) {
   mNameStrPtr = new String();
   stream >> (Object&)*mNameStrPtr;
   mMsgStrPtr = new String();
@@ -52,7 +53,7 @@ void CallException::read(Connection &stream) throw(ObjectCreationException) {
   stream >> (Object&)*mObjectPtr;
 }
 
-void CallException::write(Connection &stream) const {
+void CallException::write(Connection &stream) const throw(IOException) {
 }
 
 CallException* CallException::clone() const {
@@ -96,13 +97,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const CallException &obj) {
+  const CallException &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  CallException &obj) throw(ObjectCreationException) {
+  CallException &obj) throw(ObjectCreationException, IOException) {
   obj.read(stream);
   return stream;
 }

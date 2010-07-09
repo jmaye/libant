@@ -2,6 +2,7 @@
 #define FLOAT32_H
 
 #include "Object.h"
+#include "IOException.h"
 
 #include <iosfwd>
 
@@ -17,9 +18,9 @@ class Float32 : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Float32 &obj);
   friend Connection& operator << (Connection &stream,
-    const Float32 &obj);
+    const Float32 &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Float32 &obj);
+    Float32 &obj) throw(IOException);
 
   Float32();
   Float32(const Float32 &other);
@@ -29,8 +30,8 @@ class Float32 : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   float mf32Value;
 

@@ -34,14 +34,15 @@ void CallResult::read(ifstream &stream) {
 void CallResult::write(ofstream &stream) const {
 }
 
-void CallResult::read(Connection &stream) throw(ObjectCreationException) {
+void CallResult::read(Connection &stream)
+  throw(ObjectCreationException, IOException) {
   uint8_t u8TypeID;
   stream >> u8TypeID;
   mObjectPtr = TypesFactory::createObject(u8TypeID);
   stream >> (Object&)*mObjectPtr;
 }
 
-void CallResult::write(Connection &stream) const {
+void CallResult::write(Connection &stream) const throw(IOException) {
 }
 
 CallResult* CallResult::clone() const {
@@ -77,13 +78,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const CallResult &obj) {
+  const CallResult &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  CallResult &obj) throw(ObjectCreationException) {
+  CallResult &obj) throw(ObjectCreationException, IOException) {
   obj.read(stream);
   return stream;
 }

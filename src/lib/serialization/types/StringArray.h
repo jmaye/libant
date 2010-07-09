@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "OutOfBoundException.h"
+#include "IOException.h"
 
 #include <iosfwd>
 #include <vector>
@@ -22,9 +23,9 @@ class StringArray : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     StringArray &obj);
   friend Connection& operator << (Connection &stream,
-    const StringArray &obj);
+    const StringArray &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    StringArray &obj);
+    StringArray &obj) throw(IOException);
 
   StringArray(const StringArray &other);
   StringArray& operator = (const StringArray &other);
@@ -33,8 +34,8 @@ class StringArray : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   std::vector<std::string> mArray;
 

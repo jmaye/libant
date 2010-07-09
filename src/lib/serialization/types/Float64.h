@@ -2,6 +2,7 @@
 #define FLOAT64_H
 
 #include "Object.h"
+#include "IOException.h"
 
 #include <iosfwd>
 
@@ -17,9 +18,9 @@ class Float64 : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Float64 &obj);
   friend Connection& operator << (Connection &stream,
-    const Float64 &obj);
+    const Float64 &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Float64 &obj);
+    Float64 &obj) throw(IOException);
 
   Float64();
   Float64(const Float64 &other);
@@ -29,8 +30,8 @@ class Float64 : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   double mf64Value;
 

@@ -38,13 +38,13 @@ void Boolean::read(ifstream &stream) {
 void Boolean::write(ofstream &stream) const {
 }
 
-void Boolean::read(Connection &stream) {
+void Boolean::read(Connection &stream) throw(IOException) {
   uint8_t u8Value;
   stream >> u8Value;
   (u8Value == 1) ? mbValue = true : mbValue = false;
 }
 
-void Boolean::write(Connection &stream) const {
+void Boolean::write(Connection &stream) const throw(IOException) {
   stream << mu8TypeID;
   (mbValue == true) ? stream << (uint8_t)1 : stream << (uint8_t)0;
 }
@@ -82,13 +82,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Boolean &obj) {
+  const Boolean &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Boolean &obj) {
+  Boolean &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

@@ -38,7 +38,8 @@ void Array::read(ifstream &stream) {
 void Array::write(ofstream &stream) const {
 }
 
-void Array::read(Connection &stream) throw(ObjectCreationException) {
+void Array::read(Connection &stream)
+  throw(ObjectCreationException, IOException) {
   uint32_t u32Length;
   stream >> u32Length;
   for (uint32_t i = 0; i < u32Length; i++) {
@@ -50,7 +51,7 @@ void Array::read(Connection &stream) throw(ObjectCreationException) {
   }
 }
 
-void Array::write(Connection &stream) const {
+void Array::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << mu8TypeID << u32Length;
   for (uint32_t i = 0; i < u32Length; i++) {
@@ -62,7 +63,7 @@ Array* Array::clone() const {
   return new Array(*this);
 }
 
-void Array::callWrite(Connection &stream) const {
+void Array::callWrite(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << u32Length;
   for (uint32_t i = 0; i < u32Length; i++) {
@@ -111,13 +112,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Array &obj) {
+  const Array &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Array &obj) throw(ObjectCreationException) {
+  Array &obj) throw(ObjectCreationException, IOException) {
   obj.read(stream);
   return stream;
 }

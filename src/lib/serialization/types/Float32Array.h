@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "OutOfBoundException.h"
+#include "IOException.h"
 
 #include <iosfwd>
 #include <vector>
@@ -21,9 +22,9 @@ class Float32Array : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Float32Array &obj);
   friend Connection& operator << (Connection &stream,
-    const Float32Array &obj);
+    const Float32Array &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Float32Array &obj);
+    Float32Array &obj) throw(IOException);
 
   Float32Array(const Float32Array &other);
   Float32Array& operator = (const Float32Array &other);
@@ -32,8 +33,8 @@ class Float32Array : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   std::vector<float> mArray;
 

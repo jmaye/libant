@@ -2,6 +2,7 @@
 #define INT32_H
 
 #include "Object.h"
+#include "IOException.h"
 
 #include <iosfwd>
 
@@ -17,9 +18,9 @@ class Int32 : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Int32 &obj);
   friend Connection& operator << (Connection &stream,
-    const Int32 &obj);
+    const Int32 &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Int32 &obj);
+    Int32 &obj) throw(IOException);
 
   Int32();
   Int32(const Int32 &other);
@@ -29,8 +30,8 @@ class Int32 : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   int32_t ms32Value;
 

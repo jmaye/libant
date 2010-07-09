@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "ObjectCreationException.h"
+#include "IOException.h"
 
 #include <iosfwd>
 
@@ -18,9 +19,9 @@ class CallResult : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     CallResult &obj);
   friend Connection& operator << (Connection &stream,
-    const CallResult &obj);
+    const CallResult &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    CallResult &obj) throw(ObjectCreationException);
+    CallResult &obj) throw(ObjectCreationException, IOException);
 
   CallResult();
   CallResult(const CallResult &other);
@@ -30,8 +31,9 @@ class CallResult : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream) throw(ObjectCreationException);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream)
+    throw(ObjectCreationException, IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   const Object *mObjectPtr;
 

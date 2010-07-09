@@ -2,6 +2,7 @@
 #define INT16_H
 
 #include "Object.h"
+#include "IOException.h"
 
 #include <iosfwd>
 
@@ -17,9 +18,9 @@ class Int16 : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Int16 &obj);
   friend Connection& operator << (Connection &stream,
-    const Int16 &obj);
+    const Int16 &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Int16 &obj);
+    Int16 &obj) throw(IOException);
 
   Int16();
   Int16(const Int16 &other);
@@ -29,8 +30,8 @@ class Int16 : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   int16_t ms16Value;
 

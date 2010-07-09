@@ -36,7 +36,8 @@ void Struct::read(ifstream &stream) {
 void Struct::write(ofstream &stream) const {
 }
 
-void Struct::read(Connection &stream) throw(ObjectCreationException) {
+void Struct::read(Connection &stream)
+  throw(ObjectCreationException, IOException) {
   uint32_t u32Length;
 
   stream >> u32Length;
@@ -62,7 +63,16 @@ const Object* Struct::getObject(const std::string &strRequest) const
     return (*it).second;
 }
 
-void Struct::write(Connection &stream) const {
+void Struct::write(Connection &stream) const throw(IOException) {
+  uint32_t u32Length = mStructMap.size();
+  stream << u32Length;
+
+  std::map<string, const Object*>::const_iterator it;
+  for (it = mStructMap.begin(); it != mStructMap.end(); it++) {
+    String keyString((*it).first);
+    stream << keyString;
+    stream << (Object&)*(*it).second;
+  }
 }
 
 Struct* Struct::clone() const {
@@ -98,13 +108,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Struct &obj) {
+  const Struct &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Struct &obj) {
+  Struct &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

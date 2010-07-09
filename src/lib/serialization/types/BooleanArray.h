@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include "OutOfBoundException.h"
+#include "IOException.h"
 
 #include <iosfwd>
 #include <vector>
@@ -21,9 +22,9 @@ class BooleanArray : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     BooleanArray &obj);
   friend Connection& operator << (Connection &stream,
-    const BooleanArray &obj);
+    const BooleanArray &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    BooleanArray &obj);
+    BooleanArray &obj) throw(IOException);
 
   BooleanArray(const BooleanArray &other);
   BooleanArray& operator = (const BooleanArray &other);
@@ -32,8 +33,8 @@ class BooleanArray : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   std::vector<bool> mArray;
 

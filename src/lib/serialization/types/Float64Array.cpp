@@ -33,7 +33,7 @@ void Float64Array::read(ifstream &stream) {
 void Float64Array::write(ofstream &stream) const {
 }
 
-void Float64Array::read(Connection &stream) {
+void Float64Array::read(Connection &stream) throw(IOException) {
   uint32_t u32Length;
   stream >> u32Length;
 
@@ -44,7 +44,7 @@ void Float64Array::read(Connection &stream) {
   }
 }
 
-void Float64Array::write(Connection &stream) const {
+void Float64Array::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << mu8TypeID << u32Length;
 
@@ -98,13 +98,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Float64Array &obj) {
+  const Float64Array &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Float64Array &obj) {
+  Float64Array &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

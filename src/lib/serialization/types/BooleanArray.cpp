@@ -34,7 +34,7 @@ void BooleanArray::read(ifstream &stream) {
 void BooleanArray::write(ofstream &stream) const {
 }
 
-void BooleanArray::read(Connection &stream) {
+void BooleanArray::read(Connection &stream) throw(IOException) {
   uint32_t u32Length;
   stream >> u32Length;
 
@@ -51,7 +51,7 @@ void BooleanArray::read(Connection &stream) {
   }
 }
 
-void BooleanArray::write(Connection &stream) const {
+void BooleanArray::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << mu8TypeID << u32Length;
 
@@ -112,13 +112,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const BooleanArray &obj) {
+  const BooleanArray &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  BooleanArray &obj) {
+  BooleanArray &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

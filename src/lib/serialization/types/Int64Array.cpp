@@ -33,10 +33,17 @@ void Int64Array::read(ifstream &stream) {
 void Int64Array::write(ofstream &stream) const {
 }
 
-void Int64Array::read(Connection &stream) {
+void Int64Array::read(Connection &stream) throw(IOException) {
+  uint32_t u32Length;
+  stream >> u32Length;
+  for (uint32_t i = 0; i < u32Length; i++) {
+    int64_t i64Value;
+    stream >> i64Value;
+    mArray.push_back(i64Value);
+  }
 }
 
-void Int64Array::write(Connection &stream) const {
+void Int64Array::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << mu8TypeID << u32Length;
 
@@ -90,13 +97,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Int64Array &obj) {
+  const Int64Array &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Int64Array &obj) {
+  Int64Array &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

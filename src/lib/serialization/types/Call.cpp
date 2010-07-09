@@ -44,10 +44,10 @@ void Call::read(ifstream &stream) {
 void Call::write(ofstream &stream) const {
 }
 
-void Call::read(Connection &stream) {
+void Call::read(Connection &stream) throw(IOException) {
 }
 
-void Call::write(Connection &stream) const {
+void Call::write(Connection &stream) const throw(IOException) {
   stream << mu8TypeID;
   mProcStrPtr->callWrite(stream);
   mArgsArrayPtr->callWrite(stream);
@@ -90,13 +90,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Call &obj) {
+  const Call &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Call &obj) {
+  Call &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

@@ -33,7 +33,7 @@ void Float32Array::read(ifstream &stream) {
 void Float32Array::write(ofstream &stream) const {
 }
 
-void Float32Array::read(Connection &stream) {
+void Float32Array::read(Connection &stream) throw(IOException) {
   uint32_t u32Length;
   stream >> u32Length;
   for (uint32_t i = 0; i < u32Length; i++) {
@@ -43,7 +43,7 @@ void Float32Array::read(Connection &stream) {
   }
 }
 
-void Float32Array::write(Connection &stream) const {
+void Float32Array::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << mu8TypeID << u32Length;
   for (uint32_t i = 0; i < u32Length; i++) {
@@ -96,13 +96,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Float32Array &obj) {
+  const Float32Array &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Float32Array &obj) {
+  Float32Array &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

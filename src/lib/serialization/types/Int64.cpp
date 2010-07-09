@@ -36,11 +36,11 @@ void Int64::read(ifstream &stream) {
 void Int64::write(ofstream &stream) const {
 }
 
-void Int64::read(Connection &stream) {
+void Int64::read(Connection &stream) throw(IOException) {
   stream >> ms64Value;
 }
 
-void Int64::write(Connection &stream) const {
+void Int64::write(Connection &stream) const throw(IOException) {
   stream << mu8TypeID << ms64Value;
 }
 
@@ -77,13 +77,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Int64 &obj) {
+  const Int64 &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Int64 &obj) {
+  Int64 &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

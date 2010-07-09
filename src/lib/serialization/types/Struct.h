@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "ObjectCreationException.h"
 #include "OutOfBoundException.h"
+#include "IOException.h"
 
 #include <iosfwd>
 #include <map>
@@ -23,9 +24,9 @@ class Struct : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Struct &obj);
   friend Connection& operator << (Connection &stream,
-    const Struct &obj);
+    const Struct &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Struct &obj);
+    Struct &obj) throw(IOException);
 
   Struct();
   Struct(const Struct &other);
@@ -35,8 +36,9 @@ class Struct : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream) throw(ObjectCreationException);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream)
+    throw(ObjectCreationException, IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   std::map<std::string, const Object*> mStructMap;
 

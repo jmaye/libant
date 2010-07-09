@@ -2,6 +2,7 @@
 #define STRING_H
 
 #include "Object.h"
+#include "IOException.h"
 
 #include <iosfwd>
 #include <string>
@@ -18,9 +19,9 @@ class String : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     String &obj);
   friend Connection& operator << (Connection &stream,
-    const String &obj);
+    const String &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    String &obj);
+    String &obj) throw(IOException);
 
   String(const String &other);
   String& operator = (const String &other);
@@ -29,8 +30,8 @@ class String : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   std::string mstrValue;
 
@@ -43,7 +44,7 @@ public:
 
   const std::string& getValue() const;
 
-  void callWrite(Connection &stream) const;
+  void callWrite(Connection &stream) const throw(IOException);
 
   static const String mProto;
 

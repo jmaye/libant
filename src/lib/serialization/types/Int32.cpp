@@ -36,11 +36,11 @@ void Int32::read(ifstream &stream) {
 void Int32::write(ofstream &stream) const {
 }
 
-void Int32::read(Connection &stream) {
+void Int32::read(Connection &stream) throw(IOException) {
   stream >> ms32Value;
 }
 
-void Int32::write(Connection &stream) const {
+void Int32::write(Connection &stream) const throw(IOException) {
   stream << mu8TypeID << ms32Value;
 }
 
@@ -77,13 +77,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Int32 &obj) {
+  const Int32 &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Int32 &obj) {
+  Int32 &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

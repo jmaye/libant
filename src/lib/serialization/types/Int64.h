@@ -2,6 +2,7 @@
 #define INT64_H
 
 #include "Object.h"
+#include "IOException.h"
 
 #include <iosfwd>
 
@@ -19,9 +20,9 @@ class Int64 : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Int64 &obj);
   friend Connection& operator << (Connection &stream,
-    const Int64 &obj);
+    const Int64 &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Int64 &obj);
+    Int64 &obj) throw(IOException);
 
   Int64();
   Int64(const Int64 &other);
@@ -31,8 +32,8 @@ class Int64 : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream) throw(IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   int64_t ms64Value;
 

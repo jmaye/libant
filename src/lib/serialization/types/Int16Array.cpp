@@ -33,7 +33,7 @@ void Int16Array::read(ifstream &stream) {
 void Int16Array::write(ofstream &stream) const {
 }
 
-void Int16Array::read(Connection &stream) {
+void Int16Array::read(Connection &stream) throw(IOException) {
   uint32_t u32Length;
   stream >> u32Length;
 
@@ -44,7 +44,7 @@ void Int16Array::read(Connection &stream) {
   }
 }
 
-void Int16Array::write(Connection &stream) const {
+void Int16Array::write(Connection &stream) const throw(IOException) {
   uint32_t u32Length = mArray.size();
   stream << mu8TypeID << u32Length;
 
@@ -98,13 +98,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Int16Array &obj) {
+  const Int16Array &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Int16Array &obj) {
+  Int16Array &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

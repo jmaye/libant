@@ -36,11 +36,11 @@ void Int16::read(ifstream &stream) {
 void Int16::write(ofstream &stream) const {
 }
 
-void Int16::read(Connection &stream) {
+void Int16::read(Connection &stream) throw(IOException) {
   stream >> ms16Value;
 }
 
-void Int16::write(Connection &stream) const {
+void Int16::write(Connection &stream) const throw(IOException) {
   stream << mu8TypeID << ms16Value;
 }
 
@@ -77,13 +77,13 @@ ifstream& operator >> (ifstream &stream,
 }
 
 Connection& operator << (Connection &stream,
-  const Int16 &obj) {
+  const Int16 &obj) throw(IOException) {
   obj.write(stream);
   return stream;
 }
 
 Connection& operator >> (Connection &stream,
-  Int16 &obj) {
+  Int16 &obj) throw(IOException) {
   obj.read(stream);
   return stream;
 }

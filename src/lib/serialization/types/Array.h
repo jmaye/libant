@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "OutOfBoundException.h"
 #include "ObjectCreationException.h"
+#include "IOException.h"
 
 #include <iosfwd>
 #include <vector>
@@ -22,9 +23,9 @@ class Array : public Object {
   friend std::ifstream& operator >> (std::ifstream &stream,
     Array &obj);
   friend Connection& operator << (Connection &stream,
-    const Array &obj);
+    const Array &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Array &obj) throw(ObjectCreationException);
+    Array &obj) throw(ObjectCreationException, IOException);
 
   Array(const Array &other);
   Array& operator = (const Array &other);
@@ -33,8 +34,9 @@ class Array : public Object {
   virtual void write(std::ostream &stream) const;
   virtual void read(std::ifstream &stream);
   virtual void write(std::ofstream &stream) const;
-  virtual void read(Connection &stream) throw(ObjectCreationException);
-  virtual void write(Connection &stream) const;
+  virtual void read(Connection &stream)
+    throw(ObjectCreationException, IOException);
+  virtual void write(Connection &stream) const throw(IOException);
 
   std::vector<const Object*> mArray;
 
@@ -44,7 +46,7 @@ public:
 
   virtual Array* clone() const;
 
-  void callWrite(Connection &stream) const;
+  void callWrite(Connection &stream) const throw(IOException);
 
   uint32_t getLength() const;
 
