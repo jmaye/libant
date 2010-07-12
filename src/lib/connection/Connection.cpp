@@ -142,6 +142,8 @@ const Object* Connection::sendRequest(const Object &object)
 
   *this << object;
 
+  flushBuffer();
+
   uint8_t u8TypeID;
   *this >> u8TypeID;
 
@@ -152,12 +154,24 @@ const Object* Connection::sendRequest(const Object &object)
   return objRead;
 }
 
+void Connection::flushBuffer() throw(IOException) {
+  writeBuffer(&mvu8Buffer[0], mvu8Buffer.size());
+  mvu8Buffer.clear();
+}
+
+void Connection::addToBuffer(uint8_t *au8Buffer, uint32_t u32NbBytes) {
+  for (uint32_t i = 0; i < u32NbBytes; i++)
+    mvu8Buffer.push_back(au8Buffer[i]);
+}
+
 void Connection::writeBuffer(uint8_t *au8Buffer, uint32_t u32NbBytes)
   const throw(IOException) {
-  fd_set writeFlags;
+  double f64IntPart;
+  double f64FractPart = modf(mf64Timeout , &f64IntPart);
   struct timeval waitd;
-  waitd.tv_sec = floor(mf64Timeout);
-  waitd.tv_usec = 0;
+  waitd.tv_sec = f64IntPart;
+  waitd.tv_usec = f64FractPart * 1000000;
+  fd_set writeFlags;
   FD_ZERO(&writeFlags);
   FD_SET(mi32Socket, &writeFlags);
   int32_t i32Res = select(mi32Socket + 1, (fd_set*)0, &writeFlags,
@@ -174,10 +188,12 @@ void Connection::writeBuffer(uint8_t *au8Buffer, uint32_t u32NbBytes)
 }
 
 uint8_t Connection::readByte() const throw(IOException) {
-  fd_set readFlags;
+  double f64IntPart;
+  double f64FractPart = modf(mf64Timeout , &f64IntPart);
   struct timeval waitd;
-  waitd.tv_sec = floor(mf64Timeout);
-  waitd.tv_usec = 0;
+  waitd.tv_sec = f64IntPart;
+  waitd.tv_usec = f64FractPart * 1000000;
+  fd_set readFlags;
   FD_ZERO(&readFlags);
   FD_SET(mi32Socket, &readFlags);
   int32_t i32Res = select(mi32Socket + 1, &readFlags, (fd_set*)0,
@@ -231,49 +247,48 @@ ifstream& operator >> (ifstream &stream,
   return stream;
 }
 
-Connection& Connection::operator << (int8_t i8Value) throw(IOException) {
-  writeBuffer((uint8_t*)&i8Value, 1);
+Connection& Connection::operator << (int8_t i8Value) {
+  addToBuffer((uint8_t*)&i8Value, 1);
   return *this;
 }
 
-Connection& Connection::operator << (uint8_t u8Value) throw(IOException) {
-  writeBuffer(&u8Value, 1);
+Connection& Connection::operator << (uint8_t u8Value) {
+  addToBuffer(&u8Value, 1);
   return *this;
 }
 
-Connection& Connection::operator << (int16_t i16Value) throw(IOException) {
-  writeBuffer((uint8_t*)&i16Value, 2);
+Connection& Connection::operator << (int16_t i16Value) {
+  addToBuffer((uint8_t*)&i16Value, 2);
   return *this;
 }
 
-Connection& Connection::operator << (int32_t i32Value) throw(IOException) {
-  writeBuffer((uint8_t*)&i32Value, 4);
+Connection& Connection::operator << (int32_t i32Value) {
+  addToBuffer((uint8_t*)&i32Value, 4);
   return *this;
 }
 
-Connection& Connection::operator << (uint32_t u32Value) throw(IOException) {
-  writeBuffer((uint8_t*)&u32Value, 4);
+Connection& Connection::operator << (uint32_t u32Value) {
+  addToBuffer((uint8_t*)&u32Value, 4);
   return *this;
 }
 
-Connection& Connection::operator << (int64_t i64Value) throw(IOException) {
-  writeBuffer((uint8_t*)&i64Value, 8);
+Connection& Connection::operator << (int64_t i64Value) {
+  addToBuffer((uint8_t*)&i64Value, 8);
   return *this;
 }
 
-Connection& Connection::operator << (const string &strValue)
-  throw(IOException) {
-  writeBuffer((uint8_t*)strValue.c_str(), strValue.length());
+Connection& Connection::operator << (const string &strValue) {
+  addToBuffer((uint8_t*)strValue.c_str(), strValue.length());
   return *this;
 }
 
-Connection& Connection::operator << (float f32Value) throw(IOException) {
-  writeBuffer((uint8_t*)&f32Value, 4);
+Connection& Connection::operator << (float f32Value) {
+  addToBuffer((uint8_t*)&f32Value, 4);
   return *this;
 }
 
-Connection& Connection::operator << (double f64Value) throw(IOException) {
-  writeBuffer((uint8_t*)&f64Value, 8);
+Connection& Connection::operator << (double f64Value) {
+  addToBuffer((uint8_t*)&f64Value, 8);
   return *this;
 }
 

@@ -3,8 +3,10 @@
 #include "String.h"
 #include "Float64.h"
 #include "Float64Array.h"
+#include "Float32.h"
 #include "Array.h"
 #include "Boolean.h"
+#include "Int8.h"
 #include "Int32Array.h"
 #include "CallResult.h"
 #include "StringArray.h"
@@ -324,6 +326,48 @@ RawOdometry Platform::getRawOdometry() throw(IOException, RemoteException,
   rawOdometry.f64Right = float64Ticks.getElement(u32ArrayLength - 1);
   delete result;
   return rawOdometry;
+}
+
+void Platform::configureLocalization(bool bActive) throw(IOException,
+  RemoteException, TypeCastException, ObjectCreationException) {
+  String procString("configure");
+  Boolean activeBoolean(bActive);
+  Struct configStruct;
+  configStruct.pushObject("Localization.active", activeBoolean.clone());
+  Array argsArray;
+  argsArray.pushElement(configStruct.clone());
+  const Object *result = call(procString, argsArray);
+  const StringArray &callsStringArray =
+    result->typeCast<CallResult>().getObject()->typeCast<StringArray>();
+  if (callsStringArray.getLength() != 0)
+    throw RemoteException("Failed to configure localization");
+  delete result;
+}
+
+Safety Platform::getSafety() throw(IOException, RemoteException,
+  TypeCastException, ObjectCreationException, OutOfBoundException) {
+  String procString("inspect");
+  StringArray stringArray;
+  stringArray.pushElement("Safety");
+  Array argsArray;
+  argsArray.pushElement(stringArray.clone());
+  const Object *result = call(procString, argsArray);
+  Safety safety;
+  safety.f64Time = result->typeCast<CallResult>().getObject()
+    ->typeCast<Struct>().getObject("replyTime")->typeCast<Float64>().getValue();
+  const Struct &resStruct = result->typeCast<CallResult>().getObject()
+    ->typeCast<Struct>().getObject("Safety")->typeCast<Struct>();
+  safety.u8BatteryPower = resStruct.getObject("batteryPower")
+    ->typeCast<Int8>().getValue();
+  safety.f32BatteryVoltage = resStruct.getObject("batteryVoltage")
+    ->typeCast<Float32>().getValue();
+  const StringArray &strArray = resStruct.getObject("messages")
+    ->typeCast<StringArray>();
+  uint32_t u32Length = strArray.getLength();
+  for (uint32_t i = 0; i < u32Length; i++)
+    safety.strvMessages.push_back(strArray.getElement(i));
+  delete result;
+  return safety;
 }
 
 ostream& operator << (ostream &stream,

@@ -104,6 +104,7 @@ int main(int argc, char **argv) {
   Platform proxy(argv[1], atoi(argv[2]));
   proxy.open();
   proxy.login("User", "none");
+  proxy.configureLocalization(false);
 
   struct sigaction signal_handling;
   signal_handling.sa_sigaction = termination_handler;

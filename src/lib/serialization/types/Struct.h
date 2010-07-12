@@ -28,7 +28,6 @@ class Struct : public Object {
   friend Connection& operator >> (Connection &stream,
     Struct &obj) throw(IOException);
 
-  Struct();
   Struct(const Struct &other);
   Struct& operator = (const Struct &other);
 
@@ -43,6 +42,7 @@ class Struct : public Object {
   std::map<std::string, const Object*> mStructMap;
 
 public:
+  Struct();
   ~Struct();
 
   virtual Struct* clone() const;
@@ -51,6 +51,8 @@ public:
 
   const Object* getObject(const std::string &strRequest) const
     throw(OutOfBoundException);
+
+  void pushObject(const std::string &strKey, const Object *objectPtr);
 
   static const Struct mProto;
 

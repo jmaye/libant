@@ -15,6 +15,10 @@ Struct::Struct() : Object(0x15) {
 }
 
 Struct::Struct(const Struct &other) : Object(other) {
+  std::map<string, const Object*>::const_iterator it;
+  for (it = other.mStructMap.begin(); it != other.mStructMap.end(); it++) {
+    mStructMap[(*it).first] = (*it).second->clone();
+  }
 }
 
 Struct::~Struct() {
@@ -64,13 +68,14 @@ const Object* Struct::getObject(const std::string &strRequest) const
 }
 
 void Struct::write(Connection &stream) const throw(IOException) {
+  stream << mu8TypeID;
   uint32_t u32Length = mStructMap.size();
   stream << u32Length;
 
   std::map<string, const Object*>::const_iterator it;
   for (it = mStructMap.begin(); it != mStructMap.end(); it++) {
     String keyString((*it).first);
-    stream << keyString;
+    keyString.callWrite(stream);
     stream << (Object&)*(*it).second;
   }
 }
@@ -81,6 +86,10 @@ Struct* Struct::clone() const {
 
 uint32_t Struct::getLength() const {
   return mStructMap.size();
+}
+
+void Struct::pushObject(const string &strKey, const Object *objectPtr) {
+  mStructMap[strKey] = objectPtr;
 }
 
 ostream& operator << (ostream &stream,

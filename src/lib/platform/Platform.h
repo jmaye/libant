@@ -91,6 +91,15 @@ struct RawOdometry {
   double f64Right; //!< Right wheel [tick]
 };
 
+/** \brief Structure containing safety information.
+  */
+struct Safety {
+  double f64Time;                        //!< Request time as absolute UTC [s]
+  uint8_t u8BatteryPower;                //!< Battery power [%]
+  float f32BatteryVoltage;               //!< Battery voltage [V]
+  std::vector<std::string> strvMessages; //!< Messages
+};
+
 /** \brief Platform interface
   */
 class Platform : public Connection {
@@ -344,6 +353,27 @@ public:
     * \throw OutOfBoundException Try to access an array with wrong index
     */
   RawOdometry getRawOdometry() throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException, OutOfBoundException);
+
+  /** \brief Configure localization
+    * \param[in] bActive When true, localization is active
+    * \throw IOException Communication failure
+    * \throw RemoteException Exception occurred on the platform
+    * \throw TypeCastException Platform returned unexpected type
+    * \throw ObjectCreationException Failed to create returned object
+    */
+  void configureLocalization(bool bActive) throw(IOException, RemoteException,
+    TypeCastException, ObjectCreationException);
+
+  /** \brief Get safety informations
+    * \return Safety structure
+    * \throw IOException Communication failure
+    * \throw RemoteException Exception occurred on the platform
+    * \throw TypeCastException Platform returned unexpected type
+    * \throw ObjectCreationException Failed to create returned object
+    * \throw OutOfBoundException Try to access an array with wrong index
+    */
+  Safety getSafety() throw(IOException, RemoteException,
     TypeCastException, ObjectCreationException, OutOfBoundException);
 
 protected:
