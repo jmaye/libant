@@ -10,12 +10,14 @@
 #include <linux/joystick.h>
 #include <string.h>
 #include <signal.h>
+#include <cmath>
 
 #define JOYSTICK_NAME_SIZE     128
 #define JOYSTICK_AXE_MAX       32767
 #define JOYSTICK_TRANS_AXE     1
 #define JOYSTICK_ROT_AXE       0
 #define JOYSTICK_DEAD_BUTTON   0
+#define JOYSTICK_ALPHA_CORR    0.5
 #define PLATFORM_WATCHDOG_TIME 1.0
 #define PLATFORM_MAX_TV        0.2
 #define PLATFORM_MAX_RV        0.8
@@ -130,9 +132,16 @@ int main(int argc, char **argv) {
     }
 
     double f64RV = -1 * joystick.mai32Axes[JOYSTICK_ROT_AXE] /
-      (double)JOYSTICK_AXE_MAX * PLATFORM_MAX_RV;
+      (double)JOYSTICK_AXE_MAX;
     double f64TV = -1 * joystick.mai32Axes[JOYSTICK_TRANS_AXE] /
-      (double)JOYSTICK_AXE_MAX * PLATFORM_MAX_TV;
+      (double)JOYSTICK_AXE_MAX;
+
+    f64TV = (1 - JOYSTICK_ALPHA_CORR) * f64TV
+      + JOYSTICK_ALPHA_CORR * pow(f64TV, 3);
+    f64RV = (1 - JOYSTICK_ALPHA_CORR) * f64RV
+      + JOYSTICK_ALPHA_CORR * pow(f64RV, 3);
+    f64TV *= PLATFORM_MAX_TV;
+    f64RV *= PLATFORM_MAX_RV;
 
     if (joystick.mai32Buttons[JOYSTICK_DEAD_BUTTON] == 1)
       proxy.motionSetSpeed(f64TV, f64RV);
