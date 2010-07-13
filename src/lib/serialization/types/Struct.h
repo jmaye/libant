@@ -26,7 +26,7 @@ class Struct : public Object {
   friend Connection& operator << (Connection &stream,
     const Struct &obj) throw(IOException);
   friend Connection& operator >> (Connection &stream,
-    Struct &obj) throw(IOException);
+    Struct &obj) throw(IOException, ObjectCreationException);
 
   Struct(const Struct &other);
   Struct& operator = (const Struct &other);

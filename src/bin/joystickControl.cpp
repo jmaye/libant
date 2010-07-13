@@ -12,7 +12,6 @@
 #include <signal.h>
 
 #define JOYSTICK_NAME_SIZE     128
-#define JOYSTICK_SLEEP_TIME    0.05
 #define JOYSTICK_AXE_MAX       32767
 #define JOYSTICK_TRANS_AXE     1
 #define JOYSTICK_ROT_AXE       0
@@ -41,8 +40,7 @@ struct Joystick {
 
 using namespace std;
 
-static void termination_handler(int signum, siginfo_t *siginfo, void *data)
-{
+static void termination_handler(int signum, siginfo_t *siginfo, void *data) {
   cout << "Exiting..." << endl;
   exit(0);
 }
@@ -140,8 +138,6 @@ int main(int argc, char **argv) {
       proxy.motionSetSpeed(f64TV, f64RV);
     else
       proxy.motionStop(true);
-
-    sleep(JOYSTICK_SLEEP_TIME);
   }
 
   return 0;

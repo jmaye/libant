@@ -4,8 +4,8 @@ include(ReMake)
 
 remake_project(
   libant
-  VERSION 0.1
-  RELEASE alpha
+  VERSION 1.0
+  RELEASE beta
   SUMMARY "Bluebotics ANT driver"
   AUTHOR "Jerome Maye"
   CONTACT "jerome.maye@mavt.ethz.ch"

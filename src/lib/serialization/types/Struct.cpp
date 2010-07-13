@@ -123,7 +123,7 @@ Connection& operator << (Connection &stream,
 }
 
 Connection& operator >> (Connection &stream,
-  Struct &obj) throw(IOException) {
+  Struct &obj) throw(IOException, ObjectCreationException) {
   obj.read(stream);
   return stream;
 }
