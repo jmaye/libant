@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
       continue;
     }
     uint32_t u32After = getMsCount();
-    cout << "Odometry: " << u32After - u32Before << endl;
+    cout << ".";
     timeVector.push_back(u32After - u32Before);
     //proxy.motionSetSpeed(0, 0);
   }
