@@ -74,6 +74,14 @@ int main(int argc, char **argv) {
     Pose pose = proxy.odometryGetPose();
     } catch (IOException &e) {
       cout << "Exception occured" << endl;
+      cout << "Closing proxy" << endl;
+      proxy.close();
+      cout << "Opening proxy" << endl;
+      proxy.open();
+      cout << "Login proxy" << endl;
+      proxy.login("User", "none");
+      cout << "Confiure loc" << endl;
+      proxy.configureLocalization(false);
       continue;
     }
     uint32_t u32After = getMsCount();
