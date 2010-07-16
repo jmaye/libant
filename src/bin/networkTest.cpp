@@ -70,7 +70,12 @@ int main(int argc, char **argv) {
 
   while (1) {
     uint32_t u32Before = getMsCount();
+    try {
     Pose pose = proxy.odometryGetPose();
+    } catch (IOException &e) {
+      cout << "Exception occured" << endl;
+      continue;
+    }
     uint32_t u32After = getMsCount();
     cout << "Odometry: " << u32After - u32Before << endl;
     timeVector.push_back(u32After - u32Before);
