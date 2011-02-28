@@ -24,6 +24,7 @@ remake_pack_deb()
 remake_pack_deb(
   COMPONENT dev
   DESCRIPTION "Development headers"
+  libant
 )
 
 remake_pack_deb(
@@ -35,4 +36,5 @@ remake_pack_deb(
 remake_pack_deb(
   COMPONENT doc
   DESCRIPTION "Documentation"
+  libant
 )
