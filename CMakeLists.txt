@@ -6,7 +6,7 @@ remake_project(
   libant
   VERSION 1.0
   RELEASE beta
-  SUMMARY "Bluebotics ANT driver"
+  SUMMARY "A C++ based Bluebotics ANT interfacing library"
   AUTHOR "Jerome Maye"
   CONTACT "jerome.maye@mavt.ethz.ch"
   HOME "http://aslforge.ethz.ch/projects/libant"
