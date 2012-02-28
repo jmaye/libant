@@ -28,7 +28,7 @@
 class Object;
 
 class TypesFactory {
-  static std::map<uint8_t, const Object*> mTypesMap;
+  std::map<uint8_t, const Object*> mTypesMap;
 
   TypesFactory();
 
