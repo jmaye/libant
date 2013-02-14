@@ -38,3 +38,11 @@ remake_pack_deb(
   DESCRIPTION "Documentation"
   libant
 )
+
+remake_distribute_deb(
+  SECTION libs
+  DISTRIBUTION lucid
+  DEPENDS remake doxygen
+  PASS CMAKE_BUILD_TYPE LIBANT_SUBVERSION_REVISION
+  UPLOAD ppa:jmaye/ethz
+)
