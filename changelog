@@ -1,3 +1,9 @@
+libant (1.0-26) lucid; urgency=low
+
+  * change in remake
+
+ -- Jerome Maye <jerome.maye@mavt.ethz.ch>  Mon, 25 Mar 2013 10:57:41 +0100
+
 libant (1.0-25) lucid; urgency=low
 
   * Final deployement

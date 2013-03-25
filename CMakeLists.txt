@@ -24,19 +24,19 @@ remake_pack_deb()
 remake_pack_deb(
   COMPONENT dev
   DESCRIPTION "Development headers"
-  libant
+  DEPENDS libant
 )
 
 remake_pack_deb(
   COMPONENT test
   DESCRIPTION "Test programs"
-  libant
+  DEPENDS libant
 )
 
 remake_pack_deb(
   COMPONENT doc
   DESCRIPTION "Documentation"
-  libant
+  DEPENDS libant
 )
 
 remake_distribute_deb(
