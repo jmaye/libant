@@ -1,3 +1,9 @@
+libant (1.0-27) lucid; urgency=low
+
+  * porting to GIT
+
+ -- Jerome Maye <jerome.maye@mavt.ethz.ch>  Mon, 22 Apr 2013 10:26:33 +0200
+
 libant (1.0-26) lucid; urgency=low
 
   * change in remake

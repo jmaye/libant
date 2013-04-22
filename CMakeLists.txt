@@ -9,7 +9,7 @@ remake_project(
   SUMMARY "A C++ based Bluebotics ANT interfacing library"
   AUTHOR "Jerome Maye"
   CONTACT "jerome.maye@mavt.ethz.ch"
-  HOME "http://aslforge.ethz.ch/projects/libant"
+  HOME "https://github.com/jmaye/libant"
   LICENSE "GNU Lesser General Public License (LGPL)"
   PREFIX ant-
   INSTALL /usr/
@@ -44,7 +44,7 @@ remake_distribute_deb(
   SECTION libs
   UPLOAD ppa:jmaye/ethz
   DEPENDS remake doxygen
-  PASS CMAKE_BUILD_TYPE LIBANT_SUBVERSION_REVISION
+  PASS CMAKE_BUILD_TYPE LIBANT_GIT_REVISION
 )
 
 remake_distribute_deb(
@@ -52,5 +52,5 @@ remake_distribute_deb(
   SECTION libs
   UPLOAD ppa:jmaye/ethz
   DEPENDS remake doxygen
-  PASS CMAKE_BUILD_TYPE LIBANT_SUBVERSION_REVISION
+  PASS CMAKE_BUILD_TYPE LIBANT_GIT_REVISION
 )
