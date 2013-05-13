@@ -1,1 +1,2 @@
 remake_add_directories(exceptions serialization connection platform)
+remake_pkg_config_generate()
