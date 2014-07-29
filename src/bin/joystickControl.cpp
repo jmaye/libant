@@ -29,6 +29,7 @@
 #include <string.h>
 #include <signal.h>
 #include <cmath>
+#include <unistd.h>
 
 #define JOYSTICK_NAME_SIZE     128
 #define JOYSTICK_AXE_MAX       32767
