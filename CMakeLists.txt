@@ -54,3 +54,11 @@ remake_distribute_deb(
   DEPENDS remake doxygen pkg-config
   PASS CMAKE_BUILD_TYPE LIBANT_GIT_REVISION
 )
+
+remake_distribute_deb(
+  DISTRIBUTION trusty
+  SECTION libs
+  UPLOAD ppa:jmaye/ethz
+  DEPENDS remake doxygen pkg-config
+  PASS CMAKE_BUILD_TYPE LIBANT_GIT_REVISION
+)

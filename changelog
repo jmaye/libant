@@ -1,3 +1,9 @@
+libant (1.0-31) precise; urgency=low
+
+  * porting to trusty 
+
+ -- Jerome Maye <jerome.maye@mavt.ethz.ch>  Tue, 29 Jul 2014 13:52:58 +0200
+
 libant (1.0-30) lucid; urgency=low
 
   * adding pkg-config 
